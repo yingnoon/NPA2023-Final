@@ -2,15 +2,32 @@ from ncclient import manager
 import xmltodict
 
 m = manager.connect(
-    host="<!!!REPLACEME with router IP sddress!!!>",
-    port=<!!!REPLACEME with NETCONF Port number!!!>,
+    host="10.0.15.189",
+    port=830,
     username="admin",
     password="cisco",
     hostkey_verify=False
     )
 
 def create():
-    netconf_config = """<!!!REPLACEME with YANG data!!!>"""
+    netconf_config = """
+    <config>
+        <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
+            <interface>
+                <name>Loopback65070027</name>
+                <description>Created via NETCONF</description>
+                <type xmlns:ianaift="urn:ietf:params:xml:ns:yang:iana-if-type">ianaift:softwareLoopback</type>
+                <enabled>true</enabled>
+                <ipv4 xmlns="urn:ietf:params:xml:ns:yang:ietf-ip">
+                    <address>
+                        <ip>10.0.15.189</ip>
+                        <netmask>255.255.255.0</netmask>
+                    </address>
+                </ipv4>
+            </interface>
+        </interfaces>
+    </config>
+    """
 
     try:
         netconf_reply = netconf_edit_config(netconf_config)
